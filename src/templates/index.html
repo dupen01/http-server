@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../static/folder.png" type="image/png">
+    <title>File Browser</title>
+    <style>
+        .content{
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            /*border: none;*/
+        }
+        th, td {
+            /*border: 1px solid #ddd;*/
+            padding: 8px;
+            text-align: left;
+            border: none;
+            font-size: 14px;
+            line-height: 1.0;
+        }
+        th { /*表头的样式*/
+            background-color: #f2f2f2;
+            font-weight: bold;
+            /*color: #007bff;*/
+        }
+        /* 设置各个字段宽度 */
+        th:first-child,
+        td:first-child {
+            width: 40%; /* 调整文件名列宽度 */
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 20%; /* 调整修改大小列宽度 */
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            width: 10%; /* 调整文件类型列宽度 */
+        }
+
+        th:nth-child(4),
+        td:nth-child(4) {
+            width: 10%; /* 调整文件日期列宽度 */
+        }
+
+        input[type="file"] {
+            display: block;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 8px 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px; /* 添加圆角 */
+        }
+
+        .grayed-out {
+            color: rgb(128, 128, 128);
+        }
+        /* 新增：为按钮容器添加CSS样式 */
+        .button-container {
+            display: flex;
+            /*width: 50%;*/
+            justify-content: space-between; /* 在按钮间均匀分配空间 */
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        /* 新增：修改文件名链接的样式 */
+        #fileTable a {
+            color: #007BFF; /* 更改颜色为浅蓝色或其他你喜欢的颜色 */
+            text-decoration: none; /* 去掉下划线 */
+            cursor: pointer; /* 添加鼠标指针变为手型的效果 */
+        }
+
+        /* 当鼠标悬停在链接上时的样式 */
+        #fileTable a:hover {
+            color: #0056b3; /* 可以选择在鼠标悬停时更改颜色 */
+            font-weight: bold; /* 鼠标悬停时字体加粗 */
+        }
+
+        /* 新增：斑马条纹样式 */
+        #fileTable tbody tr:nth-child(even) {
+            background-color: #f9f9f9; /* 浅灰色或其他你喜欢的颜色 */
+        }
+
+        /* 如果需要在奇数行也设置一个稍暗一些的颜色 */
+        #fileTable tbody tr:nth-child(odd) {
+            background-color: #ffffff; /* 白色或其他你喜欢的较浅颜色 */
+        }
+
+        #fileTable thead th:not(:first-child) {
+            color: rgb(128, 128, 128); /* 灰色字体 */
+        }
+
+        #backButton:hover {
+            background-color: #0056b3; /* 鼠标悬停时的颜色 */
+        }
+        #createFolder:hover {
+            background-color: #0056b3; /* 鼠标悬停时的颜色 */
+        }
+
+    </style>
+</head>
+
+
+
+<body>
+
+<div class="content">
+
+
+
+<h2>文件浏览器</h2>
+<h3>Index of /{{file_path}}</h3>
+
+
+
+
+
+
+<!-- 文件上传和创建文件夹按钮的容器 -->
+<div class="button-container">
+    <!-- 返回按钮 -->
+    <button id="backButton" style="margin-bottom: 20px">返回</button>
+
+    <!-- 文件上传按钮 -->
+    <label for="fileInput">
+        <input type="file" name="files" id="fileInput" multiple />
+    </label>
+
+    <!-- 创建文件夹按钮 -->
+    <button id="createFolder" style="margin-bottom: 20px">新建文件夹</button>
+
+</div>
+
+
+<table id="fileTable">
+    <thead>
+    <tr>
+        <th>名称</th>
+        <th>修改日期 ⬇️</th>
+        <th>大小</th>
+        <th>类型</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for file in result %}
+    <tr>
+        <td><a href="{{ request_url }}{{ file.name }}">{{ file.name }}</a></td>
+        <td class="grayed-out">{{ file.mtime }}</td>
+        <td class="grayed-out">{{ file.size }}</td>
+        <td class="grayed-out">{{ file.ftype }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+</div>
+
+
+<script src="{{ url_for('static', path='upload.js') }}"></script>
+
+</body>
+</html>
