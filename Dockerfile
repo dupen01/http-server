@@ -8,4 +8,5 @@ COPY ./src /code/src
 
 WORKDIR /files
 
+EXPOSE 8080
 CMD ["python3", "/code/src/http_server.py"]
